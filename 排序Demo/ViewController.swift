@@ -13,8 +13,8 @@ class ViewController: UIViewController {
         
         
         super.viewDidLoad()
-        var aray = [4, 1, 2, 5, 0]
-        let resultForNum = selectSourt(&aray)
+        let aray = [4, 1, 2, 5, 0]
+        let resultForNum = mergeSort(aray)
         print(resultForNum)
         
         
@@ -35,7 +35,6 @@ class ViewController: UIViewController {
         return array
     }
 
-    
     
     // 直接插入排序
     /*
@@ -81,6 +80,54 @@ class ViewController: UIViewController {
         }
        return array
     }
+    
+    
+    func _merge(leftPile: [Int], rightPile: [Int]) -> [Int] {
+        
+        print("\nmerge left pile:\(leftPile)  |  right pile:\(rightPile)")
+
+        var leftIndex = 0
+        var rightIndex = 0
+        
+        var sortedPile = [Int]()
+        
+        while leftIndex < leftPile.count && rightIndex < rightPile.count {
+            if leftPile[leftIndex] < rightPile[rightIndex] {
+                sortedPile.append(leftPile[rightIndex])
+            } else if leftPile[leftIndex] > rightPile[rightIndex] {
+                sortedPile.append(rightPile[rightIndex])
+            } else {
+                sortedPile.append(leftPile[leftIndex])
+                leftIndex += 1
+                sortedPile.append(rightPile[rightIndex])
+                rightIndex += 1
+            }
+        }
+        
+        while leftIndex < leftPile.count {
+            sortedPile.append(leftPile[leftIndex])
+            leftIndex += 1
+        }
+        
+        while rightIndex < rightPile.count {
+            sortedPile.append(rightPile[rightIndex])
+            leftIndex += 1
+        }
+        print("sorted pile：\(sortedPile)")
+        return sortedPile
+    }
+    func mergeSort(_ array: [Int]) -> [Int] {
+        guard array.count > 1 else {
+            return array
+        }
+        let middleIndex = array.count / 2
+        let leftArray = mergeSort(Array(array[0..<middleIndex]))
+        let rightArray = mergeSort(Array(array[0..<middleIndex]))
+
+        return _merge(leftPile: leftArray, rightPile: rightArray)
+        
+    }
+    
 
 
 
