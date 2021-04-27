@@ -9,15 +9,16 @@ import UIKit
 
 class ViewController: UIViewController {
 
+
+
     override func viewDidLoad() {
-        
-        
+
         super.viewDidLoad()
-        let aray = [4, 1, 2, 5, 0]
-        let resultForNum = mergeSort(aray)
-        print(resultForNum)
-        
-        
+        let aray = [3, 5, 9, 2, 7, 4, 8, 0]
+        let resultForNum = quickSort0(aray)
+        print("resultForNum : \(resultForNum)")
+        //NSArray
+
     }
     
     // 冒泡排序
@@ -81,7 +82,37 @@ class ViewController: UIViewController {
        return array
     }
     
+    // 快排
+    func quickSort(_ array: [Int]) -> [Int] {
+        guard array.count > 1 else {
+            return array
+        }
+        
+        let piovt = array[array.count/2]
+        let less = array.filter { $0 < piovt }
+        let greater = array.filter { $0 > piovt }
+        
+        return quickSort(less) + quickSort(greater)
+        
+        
+    }
     
+    // 快排
+    func quickSort0(_ array: [Int]) -> [Int] {
+        
+        guard array.count > 1 else { return array }
+        
+        let pivot = array[array.count/2]
+        let less = array.filter { $0 < pivot }
+        let greater = array.filter { $0 > pivot }
+        
+        return quickSort0(less) + [pivot] + quickSort0(greater)
+    }
+
+    
+    // 归并排序
+    
+    // 归并排序中的合并
     func _merge(leftPile: [Int], rightPile: [Int]) -> [Int] {
         
         print("\nmerge left pile:\(leftPile)  |  right pile:\(rightPile)")
@@ -93,9 +124,12 @@ class ViewController: UIViewController {
         
         while leftIndex < leftPile.count && rightIndex < rightPile.count {
             if leftPile[leftIndex] < rightPile[rightIndex] {
-                sortedPile.append(leftPile[rightIndex])
+                sortedPile.append(leftPile[leftIndex])
+                leftIndex += 1
             } else if leftPile[leftIndex] > rightPile[rightIndex] {
                 sortedPile.append(rightPile[rightIndex])
+                rightIndex += 1
+
             } else {
                 sortedPile.append(leftPile[leftIndex])
                 leftIndex += 1
@@ -111,18 +145,20 @@ class ViewController: UIViewController {
         
         while rightIndex < rightPile.count {
             sortedPile.append(rightPile[rightIndex])
-            leftIndex += 1
+            rightIndex += 1
         }
         print("sorted pile：\(sortedPile)")
         return sortedPile
     }
+    
+    // 归并排序中的拆分
     func mergeSort(_ array: [Int]) -> [Int] {
         guard array.count > 1 else {
             return array
         }
         let middleIndex = array.count / 2
         let leftArray = mergeSort(Array(array[0..<middleIndex]))
-        let rightArray = mergeSort(Array(array[0..<middleIndex]))
+        let rightArray = mergeSort(Array(array[middleIndex..<array.count]))
 
         return _merge(leftPile: leftArray, rightPile: rightArray)
         
